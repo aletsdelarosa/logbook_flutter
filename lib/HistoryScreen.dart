@@ -1,6 +1,10 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:log_book/Widgets/ActivityInfoDialog.dart';
+import 'package:log_book/Widgets/ActivityRow.dart';
 import 'package:log_book/Widgets/MessagesWidgets/PreviousDayEmpty.dart';
+import 'package:log_book/models/Log.dart';
 
 class HistoryScreen extends StatefulWidget {
   @override
@@ -13,7 +17,7 @@ class _HistoryScreenState extends State<HistoryScreen>
     14,
     (index) => Tab(
         text:
-            '${DateFormat.yMd().format(DateTime.now().subtract(Duration(days: index + 1)))}'),
+            '${DateFormat('d/M/yyyy').format(DateTime.now().subtract(Duration(days: index + 1)))}'),
   );
 
   TabController _tabController;
@@ -45,7 +49,7 @@ class _HistoryScreenState extends State<HistoryScreen>
     return Scaffold(
       appBar: AppBar(
         title: RichText(
-            textAlign: TextAlign.center,
+            textAlign: Platform.isIOS ? TextAlign.center : TextAlign.left,
             text: TextSpan(children: [
               TextSpan(
                   text: 'Historial',
@@ -55,7 +59,7 @@ class _HistoryScreenState extends State<HistoryScreen>
                       fontSize: 20)),
               TextSpan(text: "\n"),
               TextSpan(
-                  text: '${DateFormat.yMMMMEEEEd().format(DateFormat('M/D/yyyy').parse(this._tabs[this._currentIndex].text))}',
+                  text: '${DateFormat.yMMMMEEEEd(Localizations.localeOf(context).languageCode).format(DateFormat('d/M/yyyy').parse(this._tabs[this._currentIndex].text))}',
                   style: TextStyle(
                       fontWeight: FontWeight.w300,
                       color: Colors.white,
@@ -73,7 +77,7 @@ class _HistoryScreenState extends State<HistoryScreen>
         children: _tabs
             .asMap()
             .map((index, tab) {
-              return MapEntry(index, LogList(index: index, tabText: tab.text));
+              return MapEntry(index, LogList(index: index, date: DateFormat('d/M/yyyy', Localizations.localeOf(context).languageCode).parse(tab.text)));
             })
             .values
             .toList(),
@@ -84,12 +88,49 @@ class _HistoryScreenState extends State<HistoryScreen>
 
 class LogList extends StatelessWidget {
   final int index;
-  final String tabText;
+  final DateTime date;
 
-  LogList({@required this.index, @required this.tabText});
+  LogList({@required this.index, @required this.date});
 
   @override
   Widget build(BuildContext context) {
-    return Row(children: [Expanded(child: PreviousDayEmptyMessage())]);
+
+    return FutureBuilder(
+      future: Logs.instance.getLogsForDay(date: date),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.none ||
+            snapshot.connectionState == ConnectionState.waiting) {
+          return Container(
+            alignment: Alignment.center,
+            child: CircularProgressIndicator(),
+          );
+        }
+        List<Log> logs = snapshot.data;
+        if (logs == null || logs.isEmpty) {
+          return Row(
+            children: [
+              Expanded(child: PreviousDayEmptyMessage()),
+            ],
+          );
+        }
+
+        return ListView.separated(
+          itemBuilder: (context, index) {
+            return GestureDetector(
+              child: ActivityRow(log: logs[index]),
+              onTap: () => showDialog(
+                context: context,
+                builder: (BuildContext context) =>
+                    ActivityInfoDialog(log: logs[index]),
+              ),
+            );
+          },
+          separatorBuilder: (context, index) {
+            return Divider();
+          },
+          itemCount: logs.length,
+        );
+      },
+    );
   }
 }

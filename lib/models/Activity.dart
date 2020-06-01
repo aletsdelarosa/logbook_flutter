@@ -1,36 +1,36 @@
 import 'package:flutter/material.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:icofont_flutter/icofont_flutter.dart';
 
 enum ActivityType {
-  CONTACT_PERSON,
-  EAT_WITH_SOMEONE,
-  SMOKING_AREA,
-  ATM,
-  VENDING_MACHINE,
-  STAIRS,
-  RESTROOM,
-  AREA,
+  CILINDERS,
+  LOADERS,
+  COMPONENTS,
+  SECURITY_BOOTH,
+  VEHICLE,
+  OUTSIDE_WORK,
+  COMMUTE,
+  CONTACT
 }
 
 class Activity {
   static IconData getActivityIcon({@required ActivityType activityType}) {
     switch (activityType) {
-      case ActivityType.CONTACT_PERSON:
-        return Icons.people;
-      case ActivityType.EAT_WITH_SOMEONE:
-        return Icons.restaurant;
-      case ActivityType.SMOKING_AREA:
-        return Icons.smoking_rooms;
-      case ActivityType.ATM:
-        return Icons.local_atm;
-      case ActivityType.VENDING_MACHINE:
-        return MdiIcons.cookie;
-      case ActivityType.STAIRS:
-        return MdiIcons.stairs;
-      case ActivityType.RESTROOM:
-        return Icons.wc;
-      case ActivityType.AREA:
+      case ActivityType.CILINDERS:
         return Icons.location_on;
+      case ActivityType.LOADERS:
+        return Icons.location_on;
+      case ActivityType.COMPONENTS:
+        return Icons.location_on;
+      case ActivityType.VEHICLE:
+        return Icons.directions_car;
+      case ActivityType.OUTSIDE_WORK:
+        return Icons.exit_to_app;
+      case ActivityType.COMMUTE:
+        return Icons.airport_shuttle;
+      case ActivityType.CONTACT:
+        return Icons.people;
+      case ActivityType.SECURITY_BOOTH:
+        return IcoFontIcons.policeCap;
     }
 
     return null;
@@ -38,24 +38,45 @@ class Activity {
 
   static String getActivityText({@required ActivityType activityType}) {
     switch (activityType) {
-      case ActivityType.CONTACT_PERSON:
+      case ActivityType.CILINDERS:
+        return 'Planta Cilindros';
+      case ActivityType.LOADERS:
+        return 'Planta Loaders';
+      case ActivityType.COMPONENTS:
+        return 'Planta Componentes';
+      case ActivityType.SECURITY_BOOTH:
+        return 'Caseta de vigilancia';
+      case ActivityType.VEHICLE:
+        return 'Uso de vehículo';
+      case ActivityType.OUTSIDE_WORK:
+        return 'Visita fuera de la planta';
+      case ActivityType.COMMUTE:
+        return 'Traslado al trabajo';
+      case ActivityType.CONTACT:
         return 'Contacto con alguien';
-      case ActivityType.EAT_WITH_SOMEONE:
-        return 'Comida con alguien';
-      case ActivityType.SMOKING_AREA:
-        return 'Área para fumar utilizada';
-      case ActivityType.ATM:
-        return 'Cajero automático utilizado';
-      case ActivityType.VENDING_MACHINE:
-        return 'Máquina expendedora utilizada';
-      case ActivityType.STAIRS:
-        return 'Escalera utilizada';
-      case ActivityType.RESTROOM:
-        return 'Baño utilizado';
-      case ActivityType.AREA:
-        return 'Área recorrida';
     }
 
     return null;
+  }
+
+  static ActivityType convertStringToActivityType(String string) {
+    switch (string) {
+      case 'ActivityType.CILINDERS':
+        return ActivityType.CILINDERS;
+      case 'ActivityType.LOADERS':
+        return ActivityType.LOADERS;
+      case 'ActivityType.COMPONENTS':
+        return ActivityType.COMPONENTS;
+      case 'ActivityType.SECURITY_BOOTH':
+        return ActivityType.SECURITY_BOOTH;
+      case 'ActivityType.VEHICLE':
+        return ActivityType.VEHICLE;
+      case 'ActivityType.OUTSIDE_WORK':
+        return ActivityType.OUTSIDE_WORK;
+      case 'ActivityType.COMMUTE':
+        return ActivityType.COMMUTE;
+      default:
+        return ActivityType.CONTACT;
+    }
   }
 }

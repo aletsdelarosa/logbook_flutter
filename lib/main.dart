@@ -8,19 +8,19 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Bitácora',
-      debugShowCheckedModeBanner: false,
-      localizationsDelegates: [
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate
-      ],
-      supportedLocales: [
-        const Locale('es', "MX"),
-      ],
-      theme: ThemeData(
-        primarySwatch: Colors.teal,
-      ),
-      home: MainScreen(),
-    );
+        title: 'Bitácora',
+        debugShowCheckedModeBanner: false,
+        localizationsDelegates: [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: [
+          const Locale('es'),
+        ],
+        theme: ThemeData(
+          primarySwatch: Colors.teal,
+        ),
+        home: MainScreen());
   }
 }
