@@ -1,4 +1,4 @@
-package com.example.log_book
+package com.arc.logbook
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity

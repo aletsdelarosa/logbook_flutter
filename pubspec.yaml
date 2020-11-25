@@ -32,8 +32,6 @@ dependencies:
   material_design_icons_flutter: ^2.7.94
   # Icon font
   icofont_flutter: ^1.3.0
-  # Local auth
-  local_auth: ^0.6.2
   # Path provider
   path_provider: ^1.6.9
 
